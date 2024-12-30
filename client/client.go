@@ -10,7 +10,7 @@ import (
 )
 
 type Options struct {
-	Headers map[string]string
+	Headers http.Header
 	Timeout time.Duration
 	Name    string
 	Level   slog.Level
@@ -21,7 +21,7 @@ type Options struct {
 func (o *Options) defaults() *Options {
 	if o == nil {
 		*o = Options{
-			Headers:    make(map[string]string),
+			Headers:    make(http.Header),
 			Timeout:    15 * time.Second,
 			Name:       "github.com/poly-gun/go-telemetry",
 			Attributes: make([]attribute.KeyValue, 0),
@@ -30,7 +30,7 @@ func (o *Options) defaults() *Options {
 	}
 
 	if o.Headers == nil {
-		o.Headers = make(map[string]string)
+		o.Headers = make(http.Header)
 	}
 
 	if o.Timeout <= 0 {
@@ -83,7 +83,9 @@ func (c *Client) Do(r *http.Request) (*http.Response, error) {
 
 	slog.Log(ctx, c.options.Level, "Log Message From HTTP Client Transport", slog.String("name", c.options.Name), slog.String("url", r.URL.String()))
 	for key, value := range c.options.Headers {
-		r.Header.Add(key, value)
+		for _, v := range value {
+			r.Header.Add(key, v)
+		}
 	}
 
 	return c.client.Do(r)
