@@ -3,7 +3,6 @@ module github.com/poly-gun/go-telemetry
 go 1.22.7
 
 require (
-	github.com/poly-gun/go-middleware/middleware/service v0.5.6
 	go.opentelemetry.io/contrib/bridges/otelslog v0.8.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.58.0
 	go.opentelemetry.io/otel v1.33.0
@@ -30,7 +29,6 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.25.1 // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
-	github.com/poly-gun/go-middleware v1.1.4 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.33.0 // indirect
 	go.opentelemetry.io/otel/metric v1.33.0 // indirect

@@ -44,6 +44,7 @@ func resources(ctx context.Context) *resource.Resource {
 		resource.WithHostID(),
 		resource.WithAttributes(
 			semconv.ServiceNamespaceKey.String(namespace),
+			semconv.ServiceVersionKey.String(os.Getenv("VERSION")),
 		),
 	}
 
