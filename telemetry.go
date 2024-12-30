@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"reflect"
 	"time"
 
 	"go.opentelemetry.io/otel"
@@ -52,7 +53,7 @@ func resources(ctx context.Context) *resource.Resource {
 		slog.WarnContext(ctx, "Non-Fatal Open-Telemetry Error", slog.String("error", e.Error()))
 	} else if e != nil {
 		e = fmt.Errorf("unable to generate exportable resource: %w", e)
-		slog.ErrorContext(ctx, "Fatal Open-Telemetry Error", slog.String("error", e.Error()))
+		slog.ErrorContext(ctx, "Fatal Open-Telemetry Error", slog.String("error", e.Error()), slog.String("error-type", reflect.TypeOf(e).String()))
 		panic(e)
 	}
 
