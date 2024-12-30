@@ -26,10 +26,6 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 )
 
-// resources creates and merges OpenTelemetry resource attributes including service, version, and environment-specific details into an exportable resource.
-//
-//   - Due to the nature of the following telemetry's implementation being kubernetes-specific, additional attributes such as [resource.WithContainer], [semconv.ServiceNamespaceKey], and other
-//     options are used.
 func resources(ctx context.Context) *resource.Resource {
 	namespace := os.Getenv("NAMESPACE")
 	if namespace == "" {
@@ -37,13 +33,13 @@ func resources(ctx context.Context) *resource.Resource {
 	}
 
 	options := []resource.Option{
-		resource.WithFromEnv(),      // Discover and provide attributes from OTEL_RESOURCE_ATTRIBUTES and OTEL_SERVICE_NAME environment variables.
-		resource.WithTelemetrySDK(), // Discover and provide information about the OpenTelemetry SDK used.
-		resource.WithOS(),           // Discover and provide OS information.
-		resource.WithHost(),         // Discover and provide host information.
+		resource.WithFromEnv(), // Discover and provide attributes from OTEL_RESOURCE_ATTRIBUTES and OTEL_SERVICE_NAME environment variables.
+		// resource.WithTelemetrySDK(), // Discover and provide information about the OpenTelemetry SDK used.
+		// resource.WithOS(),           // Discover and provide OS information.
+		// resource.WithHost(),         // Discover and provide host information.
 		resource.WithSchemaURL(semconv.SchemaURL),
-		resource.WithContainer(),
-		resource.WithContainerID(),
+		// resource.WithContainer(),
+		// resource.WithContainerID(),
 		resource.WithAttributes(
 			semconv.ServiceNamespaceKey.String(namespace),
 		),
