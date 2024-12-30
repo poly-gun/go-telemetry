@@ -23,7 +23,7 @@ func (o *Options) defaults() *Options {
 		*o = Options{
 			Headers:    make(map[string]string),
 			Timeout:    15 * time.Second,
-			Name:       "github.com/poly-gun/go-kubernetes-telemetry",
+			Name:       "github.com/poly-gun/go-telemetry",
 			Attributes: make([]attribute.KeyValue, 0),
 			Level:      slog.LevelInfo,
 		}
