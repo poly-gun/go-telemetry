@@ -3,7 +3,6 @@ module github.com/poly-gun/go-telemetry
 go 1.22.7
 
 require (
-	github.com/poly-gun/go-kubernetes-telemetry v0.0.1
 	go.opentelemetry.io/contrib/bridges/otelslog v0.8.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.58.0
 	go.opentelemetry.io/otel v1.33.0

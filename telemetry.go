@@ -226,7 +226,6 @@ func logexporter(ctx context.Context, settings *Settings) *log.LoggerProvider {
 }
 
 // Setup bootstraps the OpenTelemetry pipeline.
-// If it does not return an error, make sure to call shutdown for proper cleanup.
 func Setup(ctx context.Context, options ...Variadic) (shutdown func(context.Context) error) {
 	slog.DebugContext(ctx, "Starting the Telemetry Pipeline ...")
 
