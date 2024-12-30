@@ -30,3 +30,7 @@ func main() {
 ## Contributions
 
 See the [**Contributing Guide**](./CONTRIBUTING.md) for additional details on getting started.
+
+## Task-Board
+
+- [ ] Create a Resource Detector for Kubernetes Telemetry.
