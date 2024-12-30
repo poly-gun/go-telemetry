@@ -77,6 +77,7 @@ func (c *Client) Do(r *http.Request) (*http.Response, error) {
 
 	ctx := r.Context()
 	attributes := c.options.Attributes
+	attributes = append(attributes, attribute.String("url", r.URL.String()), attribute.String("method", r.Method))
 	ctx, span := trace.SpanFromContext(ctx).TracerProvider().Tracer(c.options.Name).Start(ctx, r.URL.String(), trace.WithSpanKind(trace.SpanKindClient), trace.WithTimestamp(time.Now()), trace.WithAttributes(attributes...))
 
 	defer span.End()
