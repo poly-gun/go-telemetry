@@ -83,7 +83,7 @@ func (c *Client) Do(r *http.Request) (*http.Response, error) {
 
 	slog.Log(ctx, c.options.Level, "Log Message From HTTP Client Transport", slog.String("name", c.options.Name), slog.String("url", r.URL.String()))
 	for key, value := range c.options.Headers {
-		r.Header.Set(key, value)
+		r.Header.Add(key, value)
 	}
 
 	return c.client.Do(r)
