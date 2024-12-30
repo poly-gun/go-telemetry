@@ -38,8 +38,10 @@ func resources(ctx context.Context) *resource.Resource {
 		// resource.WithOS(),           // Discover and provide OS information.
 		// resource.WithHost(),         // Discover and provide host information.
 		resource.WithSchemaURL(semconv.SchemaURL),
-		// resource.WithContainer(),
-		// resource.WithContainerID(),
+		resource.WithContainer(),
+		resource.WithContainerID(),
+		resource.WithHost(),
+		resource.WithHostID(),
 		resource.WithAttributes(
 			semconv.ServiceNamespaceKey.String(namespace),
 		),
