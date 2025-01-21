@@ -38,7 +38,7 @@ func (o *Options) defaults() *Options {
 	}
 
 	if o.Name == "" {
-		o.Name = "github.com/poly-gun/go-kubernetes-telemetry"
+		o.Name = "github.com/poly-gun/go-telemetry"
 	}
 
 	if o.Attributes == nil {
