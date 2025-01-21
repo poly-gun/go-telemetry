@@ -19,8 +19,45 @@ go get -u github.com/poly-gun/go-telemetry
 ```go
 package main
 
+import (
+    "context"
+    "os"
+    "io"
+
+    "github.com/poly-gun/go-telemetry"
+)
+
+// ctx, cancel represent the server's runtime context and cancellation handler.
+var ctx, cancel = context.WithCancel(context.Background())
+
 func main() {
     return
+}
+
+func init() {
+    // Setup the telemetry pipeline and cancellation handler.
+    shutdown := telemetry.Setup(ctx, func(o *telemetry.Settings) {
+        if os.Getenv("CI") == "" { // Example of running the program in a local, development environment.
+            o.Zipkin.Enabled = false
+
+            o.Tracer.Local = true
+            o.Tracer.Options = nil
+            o.Tracer.Writer = io.Discard
+
+            o.Metrics.Local = true
+            o.Metrics.Options = nil
+            o.Metrics.Writer = io.Discard
+
+            o.Logs.Local = true
+            o.Logs.Options = nil
+            o.Logs.Writer = io.Discard
+        } else {
+            o.Zipkin.URL = "http://zipkin.istio-system.svc.cluster.local:9411"
+        }
+    })
+
+    // Initialize the telemetry interrupt handler.
+    telemetry.Interrupt(ctx, cancel, shutdown)
 }
 ```
 
