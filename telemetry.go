@@ -68,13 +68,13 @@ func resources(ctx context.Context) *resource.Resource {
 		panic(e)
 	}
 
-	// Merge a default tracer with the initial one, overwriting anything in default.
-	instance, e = resource.Merge(resource.Default(), instance)
-	if e != nil {
-		e = fmt.Errorf("unable to merge resource: %w", e)
-		slog.ErrorContext(ctx, "Fatal Open-Telemetry Error", slog.String("error", e.Error()))
-		panic(e)
-	}
+	// // Merge a default tracer with the initial one, overwriting anything in default.
+	// instance, e = resource.Merge(resource.Default(), instance)
+	// if e != nil {
+	// 	e = fmt.Errorf("unable to merge resource: %w", e)
+	// 	slog.ErrorContext(ctx, "Fatal Open-Telemetry Error", slog.String("error", e.Error()))
+	// 	panic(e)
+	// }
 
 	return instance
 }
