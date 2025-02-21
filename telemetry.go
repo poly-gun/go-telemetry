@@ -38,6 +38,8 @@ func resources(ctx context.Context) *resource.Resource {
 		service = "service"
 	}
 
+	service = fmt.Sprintf("%s.%s", service, namespace)
+
 	version := os.Getenv("POD_VERSION")
 	if version == "" {
 		version = "latest"
