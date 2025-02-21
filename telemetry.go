@@ -54,6 +54,8 @@ func resources(ctx context.Context) *resource.Resource {
 		resource.WithContainer(),
 		resource.WithContainerID(),
 		resource.WithHost(),
+		resource.WithHostID(),
+		resource.WithProcess(),
 		resource.WithAttributes(
 			semconv.ServiceName(service),
 			semconv.ServiceNamespaceKey.String(namespace),
