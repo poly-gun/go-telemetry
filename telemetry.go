@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
@@ -45,6 +46,16 @@ func resources(ctx context.Context) *resource.Resource {
 		version = "latest"
 	}
 
+	ip := os.Getenv("POD_IP")
+	if ip == "" {
+		ip = "0.0.0.0"
+	}
+
+	name := os.Getenv("POD_NAME")
+	if name == "" {
+		name = "unknown"
+	}
+
 	options := []resource.Option{
 		resource.WithFromEnv(), // Discover and provide attributes from OTEL_RESOURCE_ATTRIBUTES and OTEL_SERVICE_NAME environment variables.
 		// resource.WithTelemetrySDK(), // Discover and provide information about the OpenTelemetry SDK used.
@@ -54,12 +65,11 @@ func resources(ctx context.Context) *resource.Resource {
 		resource.WithContainer(),
 		resource.WithContainerID(),
 		resource.WithHost(),
-		resource.WithHostID(),
-		resource.WithProcess(),
 		resource.WithAttributes(
 			semconv.ServiceName(service),
 			semconv.ServiceNamespaceKey.String(namespace),
 			semconv.ServiceVersionKey.String(version),
+			attribute.String("node_id", fmt.Sprintf("sidecar~%s~%s.%s~cluster.local", ip, name, namespace)),
 		),
 	}
 
