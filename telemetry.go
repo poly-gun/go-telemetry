@@ -25,7 +25,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.27.0"
 )
 
 func resources(ctx context.Context) *resource.Resource {
@@ -69,7 +69,7 @@ func resources(ctx context.Context) *resource.Resource {
 			semconv.ServiceName(service),
 			semconv.ServiceNamespaceKey.String(namespace),
 			semconv.ServiceVersionKey.String(version),
-			
+
 			attribute.String("node_id", fmt.Sprintf("sidecar~%s~%s.%s~cluster.local", ip, name, namespace)),
 		),
 	}
