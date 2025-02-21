@@ -69,6 +69,7 @@ func resources(ctx context.Context) *resource.Resource {
 			semconv.ServiceName(service),
 			semconv.ServiceNamespaceKey.String(namespace),
 			semconv.ServiceVersionKey.String(version),
+			
 			attribute.String("node_id", fmt.Sprintf("sidecar~%s~%s.%s~cluster.local", ip, name, namespace)),
 		),
 	}
