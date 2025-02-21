@@ -28,9 +28,19 @@ import (
 )
 
 func resources(ctx context.Context) *resource.Resource {
-	namespace := os.Getenv("NAMESPACE")
+	namespace := os.Getenv("POD_NAMESPACE")
 	if namespace == "" {
 		namespace = "local"
+	}
+
+	service := os.Getenv("POD_SERVICE")
+	if service == "" {
+		service = "service"
+	}
+
+	version := os.Getenv("POD_VERSION")
+	if version == "" {
+		version = "latest"
 	}
 
 	options := []resource.Option{
@@ -43,8 +53,9 @@ func resources(ctx context.Context) *resource.Resource {
 		resource.WithContainerID(),
 		resource.WithHost(),
 		resource.WithAttributes(
+			semconv.ServiceName(service),
 			semconv.ServiceNamespaceKey.String(namespace),
-			semconv.ServiceVersionKey.String(os.Getenv("VERSION")),
+			semconv.ServiceVersionKey.String(version),
 		),
 	}
 
