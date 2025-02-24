@@ -25,13 +25,47 @@ import (
     "io"
 
     "github.com/poly-gun/go-telemetry"
+
+    "go.opentelemetry.io/otel"
+    "go.opentelemetry.io/otel/attribute"
+    "go.opentelemetry.io/otel/trace"
 )
 
 // ctx, cancel represent the server's runtime context and cancellation handler.
 var ctx, cancel = context.WithCancel(context.Background())
 
 func main() {
-    return
+    defer cancel() // eventually stop the open-telemetry client.
+
+    ctx, span := otel.Tracer("example").Start(ctx, "main", trace.WithSpanKind(trace.SpanKindUnspecified))
+
+    // Typical use case of the span would be to defer span.End() after initialization; however, in the example, we need to
+    // control when it ends in order to capture the output and write it out as the example.
+
+    // defer span.End()
+
+    // Initialize a result that simulates an operation.
+    result := handler(ctx)
+
+    // Add an event (in many observability tools, this gets represented as a log message), using the result as the message's content.
+    span.AddEvent("example-event-log-1", trace.WithAttributes(attribute.String("message", result)))
+
+    span.End()
+
+    time.Sleep(5 * time.Second)
+
+    var instance capture
+    if e := json.Unmarshal(example.tracing.Bytes(), &instance); e != nil {
+        panic(e)
+    }
+
+    fmt.Printf("Name: %s\n", instance.Name)
+
+    fmt.Printf("Message: %s\n", instance.Events[0].Attributes[0].Value.Value)
+
+    // Output:
+    // Name: main
+    // Message: hello world
 }
 
 func init() {

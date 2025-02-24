@@ -82,6 +82,8 @@ func Example() {
 
 	fmt.Printf("Message: %s\n", instance.Events[0].Attributes[0].Value.Value)
 
+	time.Sleep(1 * time.Second)
+
 	// Output:
 	// Name: main
 	// Message: hello world
