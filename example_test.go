@@ -78,6 +78,8 @@ func Example() {
 	// Initialize the telemetry interrupt handler.
 	telemetry.Interrupt(ctx, cancel, shutdown)
 
+	defer shutdown(ctx)
+
 	ctx, span := otel.Tracer("example").Start(ctx, "main", trace.WithSpanKind(trace.SpanKindUnspecified))
 
 	// Typical use case of the span would be to defer span.End() after initialization; however, in the example, we need to
