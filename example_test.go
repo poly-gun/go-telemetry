@@ -54,31 +54,7 @@ func handler(ctx context.Context) string {
 }
 
 func Example() {
-	// Setup the telemetry pipeline and cancellation handler.
-	shutdown := telemetry.Setup(ctx, func(o *telemetry.Settings) {
-		if os.Getenv("CI") == "" { // Example of running the program in a local, development environment.
-			o.Zipkin.Enabled = false
-
-			o.Tracer.Local = true
-			o.Tracer.Options = nil
-			o.Tracer.Writer = example.tracing // os.Stdout
-
-			o.Metrics.Local = true
-			o.Metrics.Options = nil
-			o.Metrics.Writer = example.metrics // os.Stdout
-
-			o.Logs.Local = true
-			o.Logs.Options = nil
-			o.Logs.Writer = example.logs // os.Stdout
-		} else {
-			o.Zipkin.URL = "http://zipkin.istio-system.svc.cluster.local:9411"
-		}
-	})
-
-	// Initialize the telemetry interrupt handler.
-	telemetry.Interrupt(ctx, cancel, shutdown)
-
-	defer shutdown(ctx)
+	defer cancel() // eventually stop the open-telemetry client.
 
 	ctx, span := otel.Tracer("example").Start(ctx, "main", trace.WithSpanKind(trace.SpanKindUnspecified))
 
@@ -111,30 +87,28 @@ func Example() {
 	// Message: hello world
 }
 
-//
-// func init() {
-// 	// Setup the telemetry pipeline and cancellation handler.
-// 	shutdown := telemetry.Setup(ctx, func(o *telemetry.Settings) {
-// 		if os.Getenv("CI") == "" { // Example of running the program in a local, development environment.
-// 			o.Zipkin.Enabled = false
-//
-// 			o.Tracer.Local = true
-// 			o.Tracer.Options = nil
-// 			o.Tracer.Writer = example.tracing // os.Stdout
-//
-// 			o.Metrics.Local = true
-// 			o.Metrics.Options = nil
-// 			o.Metrics.Writer = example.metrics // os.Stdout
-//
-// 			o.Logs.Local = true
-// 			o.Logs.Options = nil
-// 			o.Logs.Writer = example.logs // os.Stdout
-// 		} else {
-// 			o.Zipkin.URL = "http://zipkin.istio-system.svc.cluster.local:9411"
-// 		}
-// 	})
-//
-// 	// Initialize the telemetry interrupt handler.
-// 	telemetry.Interrupt(ctx, cancel, shutdown)
-// }
-//
+func init() {
+	// Setup the telemetry pipeline and cancellation handler.
+	shutdown := telemetry.Setup(ctx, func(o *telemetry.Settings) {
+		if os.Getenv("CI") == "" { // Example of running the program in a local, development environment.
+			o.Zipkin.Enabled = false
+
+			o.Tracer.Local = true
+			o.Tracer.Options = nil
+			o.Tracer.Writer = example.tracing // os.Stdout
+
+			o.Metrics.Local = true
+			o.Metrics.Options = nil
+			o.Metrics.Writer = example.metrics // os.Stdout
+
+			o.Logs.Local = true
+			o.Logs.Options = nil
+			o.Logs.Writer = example.logs // os.Stdout
+		} else {
+			o.Zipkin.URL = "http://zipkin.istio-system.svc.cluster.local:9411"
+		}
+	})
+
+	// Initialize the telemetry interrupt handler.
+	telemetry.Interrupt(ctx, cancel, shutdown)
+}
