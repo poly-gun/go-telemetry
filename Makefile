@@ -72,7 +72,11 @@ tidy:
 
 test: tidy
 	@echo "$(red-bold)Executing Unit-Test(s) ...$(reset)"
-	@go test ./...
+	@go test -v --fullpath --cover --tags local ./...
+
+test-example: tidy
+	@echo "$(red-bold)Executing Unit-Test(s) ...$(reset)"
+	@go test -v --fullpath --cover --tags local ./example_test.go
 
 # --> patch
 

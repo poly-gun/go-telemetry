@@ -42,15 +42,15 @@ func init() {
 
             o.Tracer.Local = true
             o.Tracer.Options = nil
-            o.Tracer.Writer = io.Discard
+            o.Tracer.Writer = os.Stdout
 
             o.Metrics.Local = true
             o.Metrics.Options = nil
-            o.Metrics.Writer = io.Discard
+            o.Metrics.Writer = os.Stdout
 
             o.Logs.Local = true
             o.Logs.Options = nil
-            o.Logs.Writer = io.Discard
+            o.Logs.Writer = os.Stdout
         } else {
             o.Zipkin.URL = "http://zipkin.istio-system.svc.cluster.local:9411"
         }
