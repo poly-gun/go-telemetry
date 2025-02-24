@@ -20,9 +20,12 @@ go get -u github.com/poly-gun/go-telemetry
 package main
 
 import (
+    "bytes"
     "context"
+    "encoding/json"
+    "fmt"
     "os"
-    "io"
+    "time"
 
     "github.com/poly-gun/go-telemetry"
 
@@ -39,33 +42,21 @@ func main() {
 
     ctx, span := otel.Tracer("example").Start(ctx, "main", trace.WithSpanKind(trace.SpanKindUnspecified))
 
+    _ = ctx // Real implementation is likely to make use of the ctx.
+
     // Typical use case of the span would be to defer span.End() after initialization; however, in the example, we need to
     // control when it ends in order to capture the output and write it out as the example.
 
     // defer span.End()
 
-    // Initialize a result that simulates an operation.
-    result := handler(ctx)
-
-    // Add an event (in many observability tools, this gets represented as a log message), using the result as the message's content.
-    span.AddEvent("example-event-log-1", trace.WithAttributes(attribute.String("message", result)))
+    // Add an event (in many observability tools, this gets represented as a log message).
+    span.AddEvent("example-event-log-1", trace.WithAttributes(attribute.String("message", "Hello World")))
 
     span.End()
 
     time.Sleep(5 * time.Second)
 
-    var instance capture
-    if e := json.Unmarshal(example.tracing.Bytes(), &instance); e != nil {
-        panic(e)
-    }
-
-    fmt.Printf("Name: %s\n", instance.Name)
-
-    fmt.Printf("Message: %s\n", instance.Events[0].Attributes[0].Value.Value)
-
-    // Output:
-    // Name: main
-    // Message: hello world
+    // Output: A metrics and trace message(s) in JSON format, printed to standard-output.
 }
 
 func init() {
