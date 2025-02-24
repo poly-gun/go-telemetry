@@ -38,7 +38,7 @@ import (
 var ctx, cancel = context.WithCancel(context.Background())
 
 func main() {
-    defer cancel() // eventually stop the open-telemetry client.
+    defer cancel() // Eventually stop the open-telemetry client.
 
     ctx, span := otel.Tracer("example").Start(ctx, "main", trace.WithSpanKind(trace.SpanKindUnspecified))
 
