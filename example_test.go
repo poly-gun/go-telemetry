@@ -35,7 +35,6 @@ func Example() {
 	time.Sleep(5 * time.Second)
 
 	// The output will include metrics and trace message(s) in JSON format, printed to standard-output.
-
 	// Output:
 }
 
